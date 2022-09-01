@@ -101,6 +101,11 @@ def create_interface():
     main_menu = Menu(window)
     window.config(menu=main_menu)
 
+    file_menu = Menu(main_menu, tearoff=0)
+    file_menu.add_command(label='Выбрать файл', command=open_file)
+
+    main_menu.add_cascade(label='Файл', menu=file_menu)
+
     help_menu = Menu(main_menu, tearoff=0)
     help_menu.add_command(label="Помощь", command=create_help_menu)
     help_menu.add_command(label="Ошибки", command=create_error_menu)
