@@ -2,7 +2,7 @@ import os
 import tkinter.messagebox as mb
 from textwrap import wrap
 from tkinter import *
-from tkinter.filedialog import askopenfilename
+from tkinter.filedialog import askopenfilename, askdirectory
 from excel_script import work_with_excel
 
 output_file_name = 'Сводная таблица результат.xlsx'
@@ -33,8 +33,12 @@ def start_excel():
         if filepath == "":
             return mb.showerror(error_dict.get('КОД-2')[0], msg)
         try:
-            work_with_excel(filepath, output_file_name)
-            msg = f"Успешно! Результат хранится в файле \'{output_file_name}\'"
+            try:
+                work_with_excel(filepath, output_file_name, directory=directory)
+                msg = f"Успешно! Результат хранится в \'{directory}/{output_file_name}\'"
+            except NameError:
+                work_with_excel(filepath, output_file_name)
+                msg = f"Успешно! Результат хранится в файле \'{output_file_name}\'"
             mb.showinfo("Результат выполнения", msg)
         except PermissionError:
             msg = error_dict.get('КОД-3')[1]
@@ -96,6 +100,11 @@ def create_help_menu():
         my_y += 50
 
 
+def choose_directory():
+    global directory
+    directory = askdirectory(title="Открыть папку", initialdir="/")
+
+
 def create_interface():
     global window, lbl1
     window = Tk()
@@ -107,6 +116,7 @@ def create_interface():
 
     file_menu = Menu(main_menu, tearoff=0)
     file_menu.add_command(label='Выбрать файл', command=open_file)
+    file_menu.add_command(label='Директория', command=choose_directory)
 
     main_menu.add_cascade(label='Файл', menu=file_menu)
 

@@ -51,11 +51,15 @@ def clear_pts(ws):
         pt.TableRange2.Clear()
 
 
-def create_pivot_table(output_file_name):
-    my_path = os.path.abspath(os.curdir)
-    xl_app = win32.Dispatch('Excel.Application')
+def create_pivot_table(output_file_name, directory=None):
 
-    wb = xl_app.Workbooks.Open(my_path + '\\' + output_file_name)
+    xl_app = win32.Dispatch('Excel.Application')
+    if directory:
+        wb = xl_app.Workbooks.Open(directory + '/' + output_file_name)
+    else:
+        my_path = os.path.abspath(os.curdir)
+        wb = xl_app.Workbooks.Open(my_path + '\\' + output_file_name)
+
     ws_data = wb.Worksheets("Данные")
     ws_report = wb.Worksheets("Сводная")
     pt_cache = wb.PivotCaches().Create(1, ws_data.Range("A1").CurrentRegion)
@@ -67,7 +71,7 @@ def create_pivot_table(output_file_name):
     xl_app.Application.Quit()
 
 
-def work_with_excel(my_path, output_file_name):
+def work_with_excel(my_path, output_file_name, directory=None):
     wb = openpyxl.reader.excel.load_workbook(filename=my_path, data_only=True)
     wb.active = 1
     sheet = wb.active
@@ -128,9 +132,21 @@ def work_with_excel(my_path, output_file_name):
     for i in data:
         sheet_1.column_dimensions[i].width = data.get(i)[1]
 
-    wb_1.save(output_file_name)
-    workbook = openpyxl.load_workbook(output_file_name)
-    del workbook['Sheet']
-    workbook.save(output_file_name)
-
-    create_pivot_table(output_file_name)
+    if directory:
+        wb_1.save(directory + '/' + output_file_name)
+        workbook = openpyxl.load_workbook(directory + '/' + output_file_name)
+        del workbook['Sheet']
+        workbook.save(directory + '/' + output_file_name)
+        create_pivot_table(output_file_name, directory)
+    else:
+        wb_1.save(output_file_name)
+        workbook = openpyxl.load_workbook(output_file_name)
+        del workbook['Sheet']
+        workbook.save(output_file_name)
+        create_pivot_table(output_file_name)
+    # del workbook['Sheet']
+    # if directory:
+    #     workbook.save(output_file_name)
+    # else:
+    #     print(directory + '/' + output_file_name)
+    #     workbook.save(directory + '/' + output_file_name)
