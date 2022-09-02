@@ -3,7 +3,6 @@ import win32com.client as win32
 from openpyxl import Workbook
 from openpyxl.styles import Font
 import os
-
 import functions
 
 # Даннные столбцов таблицы заголовки и их ширина
@@ -16,7 +15,6 @@ data = {
     "F": ["Количество", 15],
     "G": ["Цена за единицу", 17],
 }
-
 
 '''Заполнение сводной таблицы'''
 
@@ -61,7 +59,6 @@ def clear_pts(ws):
 
 
 def create_pivot_table(output_file_name, directory=None):
-
     xl_app = win32.Dispatch('Excel.Application')
     if directory:
         wb = xl_app.Workbooks.Open(directory + '/' + output_file_name)

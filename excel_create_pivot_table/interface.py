@@ -5,6 +5,8 @@ from tkinter import *
 from tkinter.filedialog import askopenfilename, askdirectory
 from excel_script import work_with_excel
 
+# import time
+
 # Название выходного файла
 output_file_name = 'Сводная таблица результат.xlsx'
 
@@ -20,7 +22,6 @@ error_dict = {
                \nРешение: Закрыть выходной файл {output_file_name}.']
 }
 
-
 # Словарь помощи
 help_dict = {
     '1': 'Для начала работы нажмите на кнопку \'Выбрать файл\' \n при успешном выборе'
@@ -29,7 +30,6 @@ help_dict = {
          'завершения программы, если ошибки отсутсвуют программу выведет \n соответствующее'
          'окно и название выходного файла.'
 }
-
 
 '''Функция начало работы с экселем'''
 
@@ -45,10 +45,14 @@ def start_excel():
 
             # Проверка поступила ли директория
             try:
+                # start_time = time.time()
                 work_with_excel(filepath, output_file_name, directory=directory)
+                # print("--- %s seconds ---" % (time.time() - start_time))
                 msg = f"Успешно! Результат хранится в \'{directory}/{output_file_name}\'"
             except NameError:
+                # start_time = time.time()
                 work_with_excel(filepath, output_file_name)
+                # print("--- %s seconds ---" % (time.time() - start_time))
                 msg = f"Успешно! Результат хранится в файле \'{output_file_name}\'"
             mb.showinfo("Результат выполнения", msg)
         except PermissionError:
@@ -101,7 +105,7 @@ def create_error_menu():
     lbl.place(x=10, y=10)
     my_y = 50
 
-    #Вывод всех пунктов ошибок
+    # Вывод всех пунктов ошибок
     for i, v in enumerate(error_dict):
         lbl = Label(master=window2, text=f'{v}: {error_dict.get(v)[1]}\n{error_dict.get(v)[2]}\n\n', justify=LEFT)
         lbl.place(x=10, y=my_y)
