@@ -6,7 +6,7 @@ import os
 
 import functions
 
-
+# Даннные столбцов таблицы заголовки и их ширина
 data = {
     "A": ["Наименование товара", 40],
     "B": ["Склад", 50],
@@ -16,6 +16,9 @@ data = {
     "F": ["Количество", 15],
     "G": ["Цена за единицу", 17],
 }
+
+
+'''Заполнение сводной таблицы'''
 
 
 def insert_pivot_table_field_set(pt):
@@ -46,9 +49,15 @@ def insert_pivot_table_field_set(pt):
     field_filters[data.get("B")[0]].Orientation = 3
 
 
+'''Очистка созданной сводной таблицы'''
+
+
 def clear_pts(ws):
     for pt in ws.PivotTables():
         pt.TableRange2.Clear()
+
+
+'''Создание сводной таблицы, выбор данных для неё'''
 
 
 def create_pivot_table(output_file_name, directory=None):
@@ -69,6 +78,9 @@ def create_pivot_table(output_file_name, directory=None):
     insert_pivot_table_field_set(pt)
     wb.Close(True)
     xl_app.Application.Quit()
+
+
+'''Создание файла для сводной таблицы, выбор нужных продуктов, которые выделены зелёным'''
 
 
 def work_with_excel(my_path, output_file_name, directory=None):
@@ -144,9 +156,3 @@ def work_with_excel(my_path, output_file_name, directory=None):
         del workbook['Sheet']
         workbook.save(output_file_name)
         create_pivot_table(output_file_name)
-    # del workbook['Sheet']
-    # if directory:
-    #     workbook.save(output_file_name)
-    # else:
-    #     print(directory + '/' + output_file_name)
-    #     workbook.save(directory + '/' + output_file_name)
