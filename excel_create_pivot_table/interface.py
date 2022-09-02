@@ -1,5 +1,6 @@
 import os
 import tkinter.messagebox as mb
+from textwrap import wrap
 from tkinter import *
 from tkinter.filedialog import askopenfilename
 from excel_script import work_with_excel
@@ -59,8 +60,11 @@ def open_file():
         lbl1.config(text=my_text)
         window.update()
         width = lbl1.winfo_width()
-        if len(my_text) > 40:
-            window.geometry(str(width + 20) + 'x110')
+        if width > 290:
+            char_width = width / len(my_text)
+            wrapped_text = '\n'.join(wrap(my_text, int(290 / char_width)))
+            lbl1['text'] = wrapped_text
+            window.geometry('310x120')
         else:
             window.geometry('300x100')
 
